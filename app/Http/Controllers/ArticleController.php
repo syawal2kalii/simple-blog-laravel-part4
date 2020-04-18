@@ -49,7 +49,6 @@ class ArticleController extends Controller
             'contentt'=> 'required',
             'imgurl' => 'required|mimes:jpeg,bmp,png,jpg',
         ]);
-//        dd($data);
 
         Article::create([
             'title'=>$request->title,
@@ -104,6 +103,12 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        Article::whereSlug($article->slug)->delete();
+        Storage::delete($article->imgurl);
+        return redirect(route("article"));
+    }
+
+    public function detail(Article $article){
+        return view("detail",compact("article"));
     }
 }
